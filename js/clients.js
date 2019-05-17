@@ -5,7 +5,7 @@ function newClient(){
                     Email: $("#inputEmail").val(),
                     Street: $("#inputStreet").val(),
                     City: $("#inputCity").val(),
-                    ZIP: $("#inputZip").val()
+                    PostalCode: $("#inputZip").val()
                 };
         $.ajax(
              {
@@ -29,14 +29,28 @@ $(document).ready(function(){
         })
         .done(populateClients)
         .fail(function(){alert("Sorry, there was a problem")})
+
+        var form = document.getElementById("addClientForm");
+
+        form.addEventListener("submit", function (event) {
+             event.preventDefault();
+
+                newClient();
+        });
 });
 
 var populateClients = function (data)
-    {   debugger;
-        // $("#list").html("");
-        for (var i =0; i<data.length;++i)
-        {
-            var client = $("<tr><td>"+data[i].Name+"</td><td>"+data[i].EMail+"</td><td>"+data[i].Street+"</td><td>"+data[i].City+"</td><td>"+data[i].PostalCode+"</td></tr>");
-            $("#list").append(client);
-        }
+{   debugger;
+    // $("#list").html("");
+    for (var i =0; i<data.length;++i)
+    {
+        var client = $("<tr onclick=clickRow("+data[i].ID+")><td>"+data[i].Name+"</td><td>"+data[i].EMail+"</td><td>"+data[i].Street+"</td><td>"+data[i].City+"</td><td>"+data[i].PostalCode+"</td></tr>");
+        $("#list").append(client);
     }
+}
+
+var clickRow = function(id)
+{
+    debugger;  
+    window.location.href ="clientDetails.html?id="+id;
+}

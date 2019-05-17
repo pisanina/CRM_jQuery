@@ -3,4 +3,10 @@ table#list {
     margin-left:5%; 
     margin-right:5%;
     margin-bottom: 20px;
-  }
+  };
+
+
+tr:hover{
+      cursor: pointer;
+      background-color: #ccc;
+    };
