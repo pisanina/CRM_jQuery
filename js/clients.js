@@ -5,7 +5,8 @@ function newClient(){
                     Email: $("#inputEmail").val(),
                     Street: $("#inputStreet").val(),
                     City: $("#inputCity").val(),
-                    PostalCode: $("#inputZip").val()
+                    PostalCode: $("#inputZip").val(),
+                    TypeId: $("#clientTypes").val()
                 };
         $.ajax(
              {
@@ -15,9 +16,9 @@ function newClient(){
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(addClient)
             })
-            .done(function(){alert("We have new client")})
+            .done(function(){ window.location.href = "clients.html";})
             .fail(function(){alert("Sorry, there was a problem")});
-    
+
 }
 
 $(document).ready(function(){
@@ -37,6 +38,7 @@ $(document).ready(function(){
 
                 newClient();
         });
+            GetClietsTypes();
 });
 
 var populateClients = function (data)
@@ -53,4 +55,27 @@ var clickRow = function(id)
 {
     debugger;  
     window.location.href ="clientDetails.html?id="+id;
+}
+
+function GetClietsTypes()
+{
+ $.ajax(
+        {
+            url:"http://localhost:50555/api/IndividualClient/Type",
+            dataType : "json" ,
+            crossDomain: true
+        })
+        .done(populateClientsTypes)
+        .fail(function(){alert("Sorry, there was a problem")})
+
+}
+
+var populateClientsTypes = function (data)
+{   debugger;
+    // $("#list").html("");
+    for (var i =0; i<data.length;++i)
+    {
+        var type = $("<option value ="+data[i].ID+">"+data[i].Name+"</option>");
+        $("#clientTypes").append(type);
+    }
 }

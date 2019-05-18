@@ -1,5 +1,6 @@
 var urlParams = new URLSearchParams(window.location.search);
 var clientId= urlParams.get('id');
+var typeID;
 
 $(document).ready(function(){ debugger;
     $.ajax(
@@ -18,7 +19,14 @@ $(document).ready(function(){ debugger;
 
                 UpdateClient();
         });
+        
+        $("#deleteClient").click(function(event) {
+            DeleteClient()
+        });
+        GetClietsTypes();
 });
+
+$(document).ajaxStop(function(){$("#clientTypes").val(typeID);});
 
 var populateClient = function (data)
     {   debugger;
@@ -28,6 +36,7 @@ var populateClient = function (data)
         $("#inputStreet").val(data.Street);
         $("#inputCity").val(data.City);
         $("#inputZip").val(data.PostalCode);
+        typeID= data.TypeId;
    
     }
 
@@ -39,7 +48,8 @@ function UpdateClient(){
                     EMail : $("#inputEmail").val(),
                     Street : $("#inputStreet").val(),
                     City : $("#inputCity").val(),
-                    PostalCode : $("#inputZip").val()
+                    PostalCode : $("#inputZip").val(),
+                    TypeId: $("#clientTypes").val()
                 };
         $.ajax(
             {
@@ -51,7 +61,48 @@ function UpdateClient(){
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(ClientDto)
             })
-            .done(function(){alert("Client changed")})
+            .done(function(){ window.location.href = "clients.html";})
             .fail(function(){alert("Error in changing client")});
   
 };
+
+function DeleteClient(){
+   debugger;
+     
+        $.ajax(
+            {
+                
+                type:"Delete",
+                url:"http://localhost:50555/api/IndividualClient/"+clientId,
+                // dataType : "json" ,
+                crossDomain: true
+               
+            })
+            .done(function(){ window.location.href = "clients.html";})
+            .fail(function(){alert("Error in deleting client")});
+  
+};
+
+function GetClietsTypes()
+{
+ $.ajax(
+        {
+            url:"http://localhost:50555/api/IndividualClient/Type",
+            dataType : "json" ,
+            crossDomain: true
+        })
+        .done(populateClientsTypes)
+        .fail(function(){alert("Sorry, there was a problem")})
+
+}
+
+var populateClientsTypes = function (data)
+{   debugger;
+    // $("#list").html("");
+    for (var i =0; i<data.length;++i)
+    {
+        
+        var type = $("<option value ="+data[i].ID+">"+data[i].Name+"</option>");
+        $("#clientTypes").append(type);
+    }
+}
