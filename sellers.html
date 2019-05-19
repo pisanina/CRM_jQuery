@@ -4,7 +4,6 @@
 	<title>CRM</title>
 	<link rel="stylesheet" href="css/site.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
 </head>
 <body>
 	<div class="row">
@@ -36,6 +35,28 @@
 			</nav>
 		</div>
 	</div>
+	<form id ="addSellerForm">
+		<div class="container">
+			<div class ="jumbotron">
+				
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inputName">Name</label>
+						<input type="text" class="form-control" id="inputName" placeholder="Name" autofocus required minlength ="3" maxlength="20">
+					</div>
+					
+				</div>
+				<button id ="submitSeller"  type="submit" class="btn btn-primary">Add Seller</button>
+			</div>
+		</div>
+	</form>
+	<table class="table-bordered table-striped" id="list">
+		<tr>
+			<th>Name</th>
+		</tr>
+	</table>
 	<script src="https://code.jquery.com/jquery-3.4.0.min.js" ></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+	<script src="js/seller.js" ></script>
 </body>
 </html>
