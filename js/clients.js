@@ -6,7 +6,8 @@ function newClient(){
                     Street: $("#inputStreet").val(),
                     City: $("#inputCity").val(),
                     PostalCode: $("#inputZip").val(),
-                    TypeId: $("#clientTypes").val()
+                    TypeId: $("#clientTypes").val(),
+                    Industries: $("#clientIndustry").val()
                 };
         $.ajax(
              {
@@ -39,6 +40,7 @@ $(document).ready(function(){
                 newClient();
         });
             GetClietsTypes();
+            GetIndustryList();
 });
 
 var populateClients = function (data)
@@ -77,5 +79,28 @@ var populateClientsTypes = function (data)
     {
         var type = $("<option value ="+data[i].ID+">"+data[i].Name+"</option>");
         $("#clientTypes").append(type);
+    }
+}
+
+function GetIndustryList()
+{
+ $.ajax(
+        {
+            url:"http://localhost:50555/api/IndividualClient/Industry",
+            dataType : "json" ,
+            crossDomain: true
+        })
+        .done(populateIndustry)
+        .fail(function(){alert("Sorry, there was a problem")})
+
+}
+
+var populateIndustry = function (data)
+{   debugger;
+    // $("#list").html("");
+    for (var i =0; i<data.length;++i)
+    {
+        var industry = $("<option value ="+data[i].ID+">"+data[i].Name+"</option>");
+        $("#clientIndustry").append(industry);
     }
 }

@@ -1,6 +1,7 @@
 var urlParams = new URLSearchParams(window.location.search);
 var clientId= urlParams.get('id');
 var typeID;
+var industryList;
 
 $(document).ready(function(){ debugger;
     $.ajax(
@@ -19,14 +20,33 @@ $(document).ready(function(){ debugger;
 
                 UpdateClient();
         });
+
+        var formMessage = document.getElementById("addMessageForm");
+
+        formMessage.addEventListener("submit", function (event) {
+             event.preventDefault();
+
+                SendMessage();
+        });
         
         $("#deleteClient").click(function(event) {
             DeleteClient()
         });
+        GetClientIndustries();
+        GetIndustryList();
         GetClietsTypes();
+        GetMessages();
+        GetSellers();
+
 });
 
-$(document).ajaxStop(function(){$("#clientTypes").val(typeID);});
+$(document).ajaxStop(function()
+{
+    $("#clientTypes").val(typeID);
+    debugger;
+    $("#clientIndustry").val(industryList);
+});
+
 
 var populateClient = function (data)
     {   debugger;
@@ -49,7 +69,8 @@ function UpdateClient(){
                     Street : $("#inputStreet").val(),
                     City : $("#inputCity").val(),
                     PostalCode : $("#inputZip").val(),
-                    TypeId: $("#clientTypes").val()
+                    TypeId: $("#clientTypes").val(),
+                    Industries: $("#clientIndustry").val()
                 };
         $.ajax(
             {
@@ -106,3 +127,116 @@ var populateClientsTypes = function (data)
         $("#clientTypes").append(type);
     }
 }
+
+function GetClientIndustries()
+{
+ $.ajax(
+        {
+            url:"http://localhost:50555/api/IndividualClient/Industry/"+clientId ,
+            dataType : "json" ,
+            crossDomain: true
+        })
+        .done(populateClientsIndustries)
+        .fail(function(){alert("Sorry, there was a problem")})
+
+}
+
+var populateClientsIndustries = function (data)
+{   debugger;
+   industryList = data;
+}
+
+function GetIndustryList()
+{
+ $.ajax(
+        {
+            url:"http://localhost:50555/api/IndividualClient/Industry",
+            dataType : "json" ,
+            crossDomain: true
+        })
+        .done(populateIndustry)
+        .fail(function(){alert("Sorry, there was a problem")})
+
+}
+
+var populateIndustry = function (data)
+{   debugger;
+    // $("#list").html("");
+    for (var i =0; i<data.length;++i)
+    {
+        var industry = $("<option value ="+data[i].ID+">"+data[i].Name+"</option>");
+        $("#clientIndustry").append(industry);
+    }
+}
+
+function GetMessages()
+{
+ $.ajax(
+        {
+            url:"http://localhost:50555/api/Action/"+clientId,
+            dataType : "json" ,
+            crossDomain: true
+        })
+        .done(populateMessages)
+        .fail(function(){alert("Sorry, there was a problem")})
+
+}
+
+var populateMessages = function (data)
+{   debugger;
+    // $("#list").html("");
+    for (var i =0; i<data.length;++i)
+    {
+        
+        var message = $("<tr onclick=clickRow("+data[i].ID+")><td>"+data[i].SellerName+"</td><td>"+data[i].MessageDateFormatted+"</td><td>"+data[i].Message+"</td></tr>");
+        $("#messages").append(message);
+    }
+}
+
+
+function GetSellers()
+{ debugger;
+ $.ajax(
+        {
+            url:"http://localhost:50555/api/Seller",
+            dataType : "json" ,
+            crossDomain: true
+        })
+        .done(populateSellers)
+        .fail(function(){alert("Sorry, there was a problem")})
+
+}
+
+var populateSellers = function (data)
+{   debugger;
+    // $("#list").html("");
+    for (var i =0; i<data.length;++i)
+    {
+        
+        var seller = $("<option value ="+data[i].ID+">"+data[i].Name+"</option>");
+        $("#sellerName").append(seller);
+    }
+}
+
+function SendMessage(){
+   debugger;
+     var MessageDto={ 
+                    ClientId : clientId,
+                    SellerId : $("#sellerName").val(),
+                    Message : $("#newMessage").val()
+                   
+                };
+        $.ajax(
+            {
+                
+                type:"Post",
+                url:"http://localhost:50555/api/Action",
+                // dataType : "json" ,
+                crossDomain: true,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(MessageDto)
+            })
+            .done(function(){ window.location.href = "clientDetails.html?id="+clientId;})
+            .fail(function(){alert("Error in sending message")});
+  
+};

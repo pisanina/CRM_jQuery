@@ -32,7 +32,7 @@
 			</ul>
 		</div>
 	</nav>
-	<form id ="addClientForm">
+	<form id ="addProductForm">
 		<div class="container">
 			<div class ="jumbotron">
 				
@@ -42,52 +42,36 @@
 						<input type="text" class="form-control" id="inputName" placeholder="Name" autofocus required minlength ="3" maxlength="50">
 					</div>
 					<div class="form-group col-md-6">
-						<label for="inputEmail4">Email</label>
-						<input type="email" class="form-control" id="inputEmail" placeholder="Email" minlength ="5" maxlength="50">
-					</div>
+						<label for="inputCategory">Category:</label>
+					<select id ="productCategory" size ="3"></select>
 				</div>
-				
-				
-				<div class="form-row">
-					<div class="form-group col-md-7">
-						<label for="inputAddress">Street</label>
-						<input type="text" class="form-control" id="inputStreet" placeholder="1234 Main St" minlength ="5" maxlength="50">
-					</div>
-					<div class="form-group col-md-5">
-						<label for="inputCity">City</label>
-						<input type="text" class="form-control" id="inputCity" placeholder="City" minlength ="3" maxlength="50">
-					</div>
-				</div>
-				<div class="form-row">
-					<div class="form-group col-md-4">
-						<label for="inputZip">Zip</label>
-						<input type="text" class="form-control" id="inputZip" placeholder="Postal code" minlength ="5" maxlength="6">
-					</div>
-					<div class="form-group col-md-4">
-						<label for="inputType">Client type:</label>
-					<select id ="clientTypes" size ="3"></select>
-				</div>
-				<div class="form-group col-md-4">
-					<label for="inputType">Client Industry:</label>
-				<select id ="clientIndustry" size ="3" multiple></select>
 			</div>
+			
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="inputAddress">Quantity</label>
+					<input type="number" class="form-control" id="inputQuantity" placeholder="Quantity" requaried>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="inputEmail4">Price</label>
+					<input type="number" class="form-control" id="inputPrice" placeholder="Price" requaried>
+				</div>
+			</div>
+			
+			<button id ="submitProduct"  type="submit" class="btn btn-primary">Add Product</button>
 		</div>
-		
-		<button id ="submitClient"  type="submit" class="btn btn-primary">Add Client</button>
 	</div>
-</div>
 </form>
 <script src="https://code.jquery.com/jquery-3.4.0.min.js" ></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
-<script src="js/clients.js" ></script>
+<script src="js/products.js" ></script>
 </body>
 <table class="table-bordered table-striped" id="list">
 <tr>
-<th>Name</th>
-<th>Email</th>
-<th>Street</th>
-<th>City</th>
-<th>ZIP</th>
+	<th>Name</th>
+	<th>Category Name</th>
+	<th>Price</th>
+	<th>Quantity</th>
 </tr>
 </table>
 </html>
