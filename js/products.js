@@ -19,6 +19,15 @@ $(document).ready(function(){ debugger;
                 newProduct(); 
             });
 
+        var formSearch = document.getElementById("searchProductForm");
+
+        formSearch.addEventListener("submit", function (event) {
+             event.preventDefault();
+                 var toSearch = $("#inputSearch").val();
+                 var categoryId = $("#productCategorySearch").val();
+                 Search(categoryId, toSearch);
+             });
+
 });
 
 function GetProductCategories()
@@ -41,7 +50,7 @@ var populateCategories = function (data)
     {
         
         var type = $("<option value ="+data[i].ID+">"+data[i].Name+"</option>");
-        $("#productCategory").append(type);
+        $("#productCategory, #productCategorySearch").append(type);
     }
 }
 
@@ -49,7 +58,7 @@ var populateCategories = function (data)
 
 var populateProducts = function (data)
 {   debugger;
-    // $("#list").html("");
+     $("#list").html("");
     for (var i =0; i<data.length;++i)
     {
         
@@ -77,4 +86,16 @@ function newProduct(){
             .done(function(){ window.location.href = "products.html";})
             .fail(function(){alert("Sorry, there was a problem")})
  }
+
+function Search(categoryId, toSearch)
+{debugger;
+     $.ajax(
+        {
+            url:"http://localhost:50555/api/Product?categoryId="+categoryId+"&toSearch="+toSearch,
+            dataType : "json" ,
+            crossDomain: true
+        })
+        .done(populateProducts)
+        .fail(function(){alert("Sorry, there was a problem")})
+}
 
